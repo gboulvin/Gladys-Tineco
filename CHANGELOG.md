@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-10-16
+
 ### Fixed
 
 - Appliances missing from the Discovery tab although the Tineco app shows
@@ -47,6 +49,7 @@ the notes of the version's GitHub Release.
 - English, French, German and Spanish everywhere: manifest, messages, widgets,
   device names and documentation.
 
-[Unreleased]: https://github.com/gboulvin/Gladys-Tineco/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/gboulvin/Gladys-Tineco/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/gboulvin/Gladys-Tineco/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/gboulvin/Gladys-Tineco/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/gboulvin/Gladys-Tineco/releases/tag/v1.0.0

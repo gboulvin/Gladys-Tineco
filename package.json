@@ -1,6 +1,6 @@
 {
   "name": "gladys-integration-tineco",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "Gladys Assistant external integration for Tineco floor washers (Floor One, iFloor...).",
   "type": "module",
