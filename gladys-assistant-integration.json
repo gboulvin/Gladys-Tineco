@@ -1,0 +1,842 @@
+{
+  "manifest_version": 1,
+  "type": "device",
+  "name": "Tineco",
+  "description": {
+    "en": "Tineco floor washers (Floor One, iFloor…): status, tanks, battery and scenes.",
+    "fr": "Laveurs de sols Tineco (Floor One, iFloor…) : état, réservoirs, batterie et scènes.",
+    "de": "Tineco-Nasssauger (Floor One, iFloor…): Status, Tanks, Akku und Szenen.",
+    "es": "Fregonas eléctricas Tineco (Floor One, iFloor…): estado, depósitos, batería y escenas."
+  },
+  "version": "1.0.0",
+  "docker_image": "ghcr.io/gboulvin/gladys-tineco:1.0.0",
+  "gladys_version": ">=5.1.0",
+  "cover_image": "https://raw.githubusercontent.com/gboulvin/Gladys-Tineco/main/cover.png",
+  "categories": ["appliances"],
+  "transports": ["cloud"],
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "Your Tineco account",
+        "fr": "Votre compte Tineco",
+        "de": "Ihr Tineco-Konto",
+        "es": "Su cuenta Tineco"
+      },
+      "description": {
+        "en": "Use the e-mail and password of the Tineco app, and the country chosen when the account was created. On the first connection Tineco e-mails a verification code: enter it below and save.",
+        "fr": "Utilisez l'e-mail et le mot de passe de l'application Tineco, et le pays choisi à la création du compte. À la première connexion, Tineco envoie un code de vérification par e-mail : saisissez-le ci-dessous et enregistrez.",
+        "de": "Verwenden Sie E-Mail und Passwort der Tineco-App und das bei der Kontoerstellung gewählte Land. Bei der ersten Verbindung sendet Tineco einen Bestätigungscode per E-Mail: Geben Sie ihn unten ein und speichern Sie.",
+        "es": "Utilice el correo y la contraseña de la app Tineco, y el país elegido al crear la cuenta. En la primera conexión, Tineco envía un código de verificación por correo: introdúzcalo abajo y guarde."
+      },
+      "links": [
+        {
+          "url": "https://www.tineco.com/",
+          "label": {
+            "en": "Tineco website",
+            "fr": "Site de Tineco",
+            "de": "Tineco-Website",
+            "es": "Sitio web de Tineco"
+          }
+        }
+      ]
+    },
+    {
+      "key": "email",
+      "type": "string",
+      "required": true,
+      "label": {
+        "en": "E-mail",
+        "fr": "E-mail",
+        "de": "E-Mail",
+        "es": "Correo electrónico"
+      },
+      "placeholder": {
+        "en": "e.g. me@example.com",
+        "fr": "ex. moi@exemple.fr",
+        "de": "z. B. ich@beispiel.de",
+        "es": "p. ej. yo@ejemplo.es"
+      }
+    },
+    {
+      "key": "password",
+      "type": "secret",
+      "required": true,
+      "label": {
+        "en": "Password",
+        "fr": "Mot de passe",
+        "de": "Passwort",
+        "es": "Contraseña"
+      }
+    },
+    {
+      "key": "region",
+      "type": "select",
+      "required": true,
+      "default": "FR",
+      "label": {
+        "en": "Account country",
+        "fr": "Pays du compte",
+        "de": "Land des Kontos",
+        "es": "País de la cuenta"
+      },
+      "options": [
+        {
+          "value": "FR",
+          "label": {
+            "en": "France",
+            "fr": "France",
+            "de": "Frankreich",
+            "es": "Francia"
+          }
+        },
+        {
+          "value": "BE",
+          "label": {
+            "en": "Belgium",
+            "fr": "Belgique",
+            "de": "Belgien",
+            "es": "Bélgica"
+          }
+        },
+        {
+          "value": "CH",
+          "label": {
+            "en": "Switzerland",
+            "fr": "Suisse",
+            "de": "Schweiz",
+            "es": "Suiza"
+          }
+        },
+        {
+          "value": "LU",
+          "label": {
+            "en": "Luxembourg",
+            "fr": "Luxembourg",
+            "de": "Luxemburg",
+            "es": "Luxemburgo"
+          }
+        },
+        {
+          "value": "DE",
+          "label": {
+            "en": "Germany",
+            "fr": "Allemagne",
+            "de": "Deutschland",
+            "es": "Alemania"
+          }
+        },
+        {
+          "value": "AT",
+          "label": {
+            "en": "Austria",
+            "fr": "Autriche",
+            "de": "Österreich",
+            "es": "Austria"
+          }
+        },
+        {
+          "value": "ES",
+          "label": {
+            "en": "Spain",
+            "fr": "Espagne",
+            "de": "Spanien",
+            "es": "España"
+          }
+        },
+        {
+          "value": "PT",
+          "label": {
+            "en": "Portugal",
+            "fr": "Portugal",
+            "de": "Portugal",
+            "es": "Portugal"
+          }
+        },
+        {
+          "value": "IT",
+          "label": {
+            "en": "Italy",
+            "fr": "Italie",
+            "de": "Italien",
+            "es": "Italia"
+          }
+        },
+        {
+          "value": "NL",
+          "label": {
+            "en": "Netherlands",
+            "fr": "Pays-Bas",
+            "de": "Niederlande",
+            "es": "Países Bajos"
+          }
+        },
+        {
+          "value": "PL",
+          "label": {
+            "en": "Poland",
+            "fr": "Pologne",
+            "de": "Polen",
+            "es": "Polonia"
+          }
+        },
+        {
+          "value": "GB",
+          "label": {
+            "en": "United Kingdom",
+            "fr": "Royaume-Uni",
+            "de": "Vereinigtes Königreich",
+            "es": "Reino Unido"
+          }
+        },
+        {
+          "value": "IE",
+          "label": {
+            "en": "Ireland",
+            "fr": "Irlande",
+            "de": "Irland",
+            "es": "Irlanda"
+          }
+        },
+        {
+          "value": "US",
+          "label": {
+            "en": "United States",
+            "fr": "États-Unis",
+            "de": "Vereinigte Staaten",
+            "es": "Estados Unidos"
+          }
+        },
+        {
+          "value": "CA",
+          "label": {
+            "en": "Canada",
+            "fr": "Canada",
+            "de": "Kanada",
+            "es": "Canadá"
+          }
+        },
+        {
+          "value": "AU",
+          "label": {
+            "en": "Australia",
+            "fr": "Australie",
+            "de": "Australien",
+            "es": "Australia"
+          }
+        }
+      ]
+    },
+    {
+      "key": "verification_code",
+      "type": "string",
+      "required": false,
+      "label": {
+        "en": "Verification code",
+        "fr": "Code de vérification",
+        "de": "Bestätigungscode",
+        "es": "Código de verificación"
+      },
+      "description": {
+        "en": "Only on the first connection: the code Tineco sent you by e-mail.",
+        "fr": "Uniquement à la première connexion : le code reçu de Tineco par e-mail.",
+        "de": "Nur bei der ersten Verbindung: der Code, den Tineco per E-Mail gesendet hat.",
+        "es": "Solo en la primera conexión: el código que Tineco le envió por correo."
+      },
+      "placeholder": {
+        "en": "e.g. 123456",
+        "fr": "ex. 123456",
+        "de": "z. B. 123456",
+        "es": "p. ej. 123456"
+      }
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "required": false,
+      "default": "en",
+      "label": {
+        "en": "Language of device names",
+        "fr": "Langue des noms des appareils",
+        "de": "Sprache der Gerätenamen",
+        "es": "Idioma de los nombres"
+      },
+      "options": [
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "Anglais",
+            "de": "Englisch",
+            "es": "Inglés"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "French",
+            "fr": "Français",
+            "de": "Französisch",
+            "es": "Francés"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "German",
+            "fr": "Allemand",
+            "de": "Deutsch",
+            "es": "Alemán"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Spanish",
+            "fr": "Espagnol",
+            "de": "Spanisch",
+            "es": "Español"
+          }
+        }
+      ]
+    },
+    {
+      "key": "poll_frequency",
+      "type": "number",
+      "required": false,
+      "default": 60,
+      "min": 30,
+      "max": 3600,
+      "label": {
+        "en": "Refresh interval (s)",
+        "fr": "Intervalle de rafraîchissement (s)",
+        "de": "Aktualisierungsintervall (s)",
+        "es": "Intervalo de actualización (s)"
+      },
+      "description": {
+        "en": "How often the appliances are read, in seconds (30 minimum).",
+        "fr": "Fréquence de lecture des appareils, en secondes (30 minimum).",
+        "de": "Wie oft die Geräte gelesen werden, in Sekunden (mindestens 30).",
+        "es": "Frecuencia de lectura de los aparatos, en segundos (mínimo 30)."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "key": "test_connection",
+      "timeout_seconds": 60,
+      "label": {
+        "en": "Test the connection",
+        "fr": "Tester la connexion",
+        "de": "Verbindung testen",
+        "es": "Probar la conexión"
+      }
+    },
+    {
+      "key": "send_verification_code",
+      "timeout_seconds": 30,
+      "label": {
+        "en": "Send a new verification code",
+        "fr": "Recevoir un nouveau code de vérification",
+        "de": "Neuen Bestätigungscode senden",
+        "es": "Enviar un nuevo código"
+      }
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "cleaning_started",
+      "label": {
+        "en": "Cleaning started",
+        "fr": "Nettoyage démarré",
+        "de": "Reinigung gestartet",
+        "es": "Limpieza iniciada"
+      },
+      "description": {
+        "en": "A Tineco appliance started cleaning.",
+        "fr": "Un appareil Tineco a commencé à nettoyer.",
+        "de": "Ein Tineco-Gerät hat mit der Reinigung begonnen.",
+        "es": "Un aparato Tineco empezó a limpiar."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Appliance",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Aparato"
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "battery",
+          "type": "number",
+          "label": {
+            "en": "Battery (%)",
+            "fr": "Batterie (%)",
+            "de": "Akku (%)",
+            "es": "Batería (%)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "cleaning_finished",
+      "label": {
+        "en": "Cleaning finished",
+        "fr": "Nettoyage terminé",
+        "de": "Reinigung beendet",
+        "es": "Limpieza terminada"
+      },
+      "description": {
+        "en": "A Tineco appliance stopped cleaning.",
+        "fr": "Un appareil Tineco a fini de nettoyer.",
+        "de": "Ein Tineco-Gerät hat die Reinigung beendet.",
+        "es": "Un aparato Tineco terminó de limpiar."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Appliance",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Aparato"
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "duration_minutes",
+          "type": "number",
+          "label": {
+            "en": "Duration (min)",
+            "fr": "Durée (min)",
+            "de": "Dauer (Min.)",
+            "es": "Duración (min)"
+          }
+        },
+        {
+          "key": "battery",
+          "type": "number",
+          "label": {
+            "en": "Battery (%)",
+            "fr": "Batterie (%)",
+            "de": "Akku (%)",
+            "es": "Batería (%)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "self_cleaning_finished",
+      "label": {
+        "en": "Self-cleaning finished",
+        "fr": "Auto-nettoyage terminé",
+        "de": "Selbstreinigung beendet",
+        "es": "Autolimpieza terminada"
+      },
+      "description": {
+        "en": "The self-cleaning cycle of the brush is over.",
+        "fr": "Le cycle d'auto-nettoyage de la brosse est terminé.",
+        "de": "Der Selbstreinigungszyklus der Bürste ist beendet.",
+        "es": "El ciclo de autolimpieza del cepillo ha terminado."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Appliance",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Aparato"
+          }
+        }
+      ]
+    },
+    {
+      "key": "tank_alert",
+      "label": {
+        "en": "Water tank alert",
+        "fr": "Alerte réservoir",
+        "de": "Wassertank-Warnung",
+        "es": "Alerta de depósito"
+      },
+      "description": {
+        "en": "The dirty water tank is full or the clean water tank is empty.",
+        "fr": "Le réservoir d'eau sale est plein ou celui d'eau propre est vide.",
+        "de": "Der Schmutzwassertank ist voll oder der Frischwassertank leer.",
+        "es": "El depósito de agua sucia está lleno o el de agua limpia vacío."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Appliance",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Aparato"
+          }
+        },
+        {
+          "key": "alert",
+          "type": "multi_select",
+          "label": {
+            "en": "Alert",
+            "fr": "Alerte",
+            "de": "Warnung",
+            "es": "Alerta"
+          },
+          "options": [
+            {
+              "value": "waste_tank_full",
+              "label": {
+                "en": "Dirty water tank full",
+                "fr": "Réservoir d'eau sale plein",
+                "de": "Schmutzwassertank voll",
+                "es": "Depósito de agua sucia lleno"
+              }
+            },
+            {
+              "value": "fresh_water_empty",
+              "label": {
+                "en": "Clean water tank empty",
+                "fr": "Réservoir d'eau propre vide",
+                "de": "Frischwassertank leer",
+                "es": "Depósito de agua limpia vacío"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "alert",
+          "type": "string",
+          "label": {
+            "en": "Alert",
+            "fr": "Alerte",
+            "de": "Warnung",
+            "es": "Alerta"
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "refresh_status",
+      "timeout_seconds": 30,
+      "label": {
+        "en": "Read a Tineco appliance",
+        "fr": "Lire un appareil Tineco",
+        "de": "Tineco-Gerät auslesen",
+        "es": "Leer un aparato Tineco"
+      },
+      "description": {
+        "en": "Reads the appliance now, for the following conditions.",
+        "fr": "Lit l'appareil maintenant, pour les conditions suivantes.",
+        "de": "Liest das Gerät jetzt aus, für die folgenden Bedingungen.",
+        "es": "Lee el aparato ahora, para las condiciones siguientes."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Appliance",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Aparato"
+          },
+          "required": true
+        }
+      ],
+      "outputs": [
+        {
+          "key": "online",
+          "type": "boolean",
+          "label": {
+            "en": "Online",
+            "fr": "En ligne",
+            "de": "Online",
+            "es": "En línea"
+          }
+        },
+        {
+          "key": "activity",
+          "type": "string",
+          "label": {
+            "en": "Activity",
+            "fr": "Activité",
+            "de": "Aktivität",
+            "es": "Actividad"
+          }
+        },
+        {
+          "key": "battery",
+          "type": "number",
+          "label": {
+            "en": "Battery (%)",
+            "fr": "Batterie (%)",
+            "de": "Akku (%)",
+            "es": "Batería (%)"
+          }
+        },
+        {
+          "key": "waste_tank_full",
+          "type": "boolean",
+          "label": {
+            "en": "Dirty water tank full",
+            "fr": "Réservoir d'eau sale plein",
+            "de": "Schmutzwassertank voll",
+            "es": "Depósito de agua sucia lleno"
+          }
+        },
+        {
+          "key": "fresh_water_empty",
+          "type": "boolean",
+          "label": {
+            "en": "Clean water tank empty",
+            "fr": "Réservoir d'eau propre vide",
+            "de": "Frischwassertank leer",
+            "es": "Depósito de agua limpia vacío"
+          }
+        }
+      ]
+    },
+    {
+      "key": "set_volume",
+      "timeout_seconds": 30,
+      "label": {
+        "en": "Set the voice volume",
+        "fr": "Régler le volume de la voix",
+        "de": "Sprachlautstärke einstellen",
+        "es": "Ajustar el volumen de voz"
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Appliance",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Aparato"
+          },
+          "required": true
+        },
+        {
+          "key": "level",
+          "type": "select",
+          "required": true,
+          "default": "2",
+          "label": {
+            "en": "Volume",
+            "fr": "Volume",
+            "de": "Lautstärke",
+            "es": "Volumen"
+          },
+          "options": [
+            {
+              "value": "1",
+              "label": {
+                "en": "Low",
+                "fr": "Faible",
+                "de": "Leise",
+                "es": "Bajo"
+              }
+            },
+            {
+              "value": "2",
+              "label": {
+                "en": "Medium",
+                "fr": "Moyen",
+                "de": "Mittel",
+                "es": "Medio"
+              }
+            },
+            {
+              "value": "3",
+              "label": {
+                "en": "High",
+                "fr": "Fort",
+                "de": "Laut",
+                "es": "Alto"
+              }
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "key": "success",
+          "type": "boolean",
+          "label": {
+            "en": "Command accepted",
+            "fr": "Commande acceptée",
+            "de": "Befehl angenommen",
+            "es": "Orden aceptada"
+          }
+        }
+      ]
+    },
+    {
+      "key": "set_voice_prompts",
+      "timeout_seconds": 30,
+      "label": {
+        "en": "Turn the voice prompts on or off",
+        "fr": "Activer ou couper les annonces vocales",
+        "de": "Sprachansagen ein- oder ausschalten",
+        "es": "Activar o desactivar los avisos de voz"
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Appliance",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Aparato"
+          },
+          "required": true
+        },
+        {
+          "key": "enabled",
+          "type": "boolean",
+          "required": true,
+          "default": true,
+          "label": {
+            "en": "Voice prompts on",
+            "fr": "Annonces vocales activées",
+            "de": "Sprachansagen an",
+            "es": "Avisos de voz activados"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "key": "success",
+          "type": "boolean",
+          "label": {
+            "en": "Command accepted",
+            "fr": "Commande acceptée",
+            "de": "Befehl angenommen",
+            "es": "Orden aceptada"
+          }
+        }
+      ]
+    },
+    {
+      "key": "set_brush_light",
+      "timeout_seconds": 30,
+      "label": {
+        "en": "Turn the brush light on or off",
+        "fr": "Allumer ou éteindre l'éclairage de la brosse",
+        "de": "Bürstenbeleuchtung ein- oder ausschalten",
+        "es": "Encender o apagar la luz del cepillo"
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Appliance",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Aparato"
+          },
+          "required": true
+        },
+        {
+          "key": "on",
+          "type": "boolean",
+          "required": true,
+          "default": true,
+          "label": {
+            "en": "Light on",
+            "fr": "Éclairage allumé",
+            "de": "Licht an",
+            "es": "Luz encendida"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "key": "success",
+          "type": "boolean",
+          "label": {
+            "en": "Command accepted",
+            "fr": "Commande acceptée",
+            "de": "Befehl angenommen",
+            "es": "Orden aceptada"
+          }
+        }
+      ]
+    }
+  ],
+  "widgets": [
+    {
+      "key": "appliance",
+      "icon": "wind",
+      "action_timeout_seconds": 30,
+      "label": {
+        "en": "Tineco appliance",
+        "fr": "Appareil Tineco",
+        "de": "Tineco-Gerät",
+        "es": "Aparato Tineco"
+      },
+      "description": {
+        "en": "Battery, activity and water tanks of one appliance.",
+        "fr": "Batterie, activité et réservoirs d'un appareil.",
+        "de": "Akku, Aktivität und Wassertanks eines Geräts.",
+        "es": "Batería, actividad y depósitos de un aparato."
+      },
+      "settings": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Appliance",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Aparato"
+          }
+        }
+      ]
+    },
+    {
+      "key": "overview",
+      "icon": "list",
+      "label": {
+        "en": "Tineco overview",
+        "fr": "Vue d’ensemble Tineco",
+        "de": "Tineco-Übersicht",
+        "es": "Resumen Tineco"
+      },
+      "description": {
+        "en": "The activity of every Tineco appliance.",
+        "fr": "L’activité de chaque appareil Tineco.",
+        "de": "Die Aktivität jedes Tineco-Geräts.",
+        "es": "La actividad de cada aparato Tineco."
+      }
+    }
+  ]
+}
