@@ -93,5 +93,9 @@ Un aparato sin conexión nunca hace fallar una escena: las salidas lo indican.
   contraseña y sobre todo el **país** de la cuenta.
 - **«Tineco rechazó el código de verificación»**: los códigos caducan; use
   **Enviar un nuevo código** e introduzca el nuevo.
+- **«Tineco no lista ningún aparato»**: la lista viene de los servidores
+  Tineco del país elegido. Elija el país que muestra la app Tineco (Perfil >
+  Ajustes), guarde y vuelva a probar. ¿Sigue vacía? Comparta la línea
+  «Answer shape» de los registros (no contiene datos personales) en una issue.
 - Registros de la integración: Gladys → Integraciones → Tineco → registros.
   Las contraseñas y los tokens nunca se registran.

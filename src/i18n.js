@@ -53,10 +53,10 @@ export const MESSAGES = {
     es: 'Tineco no pide ningún código: la cuenta está conectada.',
   },
   noDevice: {
-    en: 'Connected, but no appliance is linked to this Tineco account.',
-    fr: 'Connecté, mais aucun appareil n’est associé à ce compte Tineco.',
-    de: 'Verbunden, aber diesem Tineco-Konto ist kein Gerät zugeordnet.',
-    es: 'Conectado, pero ninguna aparato está vinculado a esta cuenta Tineco.',
+    en: 'Connected, but Tineco lists no appliance for this account in this country: check that "Account country" is the one of the Tineco app (Profile > Settings), then test again.',
+    fr: 'Connecté, mais Tineco ne liste aucun appareil pour ce compte dans ce pays : vérifiez que « Pays du compte » est celui de l’application Tineco (Profil > Paramètres), puis testez à nouveau.',
+    de: 'Verbunden, aber Tineco listet für dieses Konto in diesem Land kein Gerät: Prüfen Sie, ob „Land des Kontos“ dem der Tineco-App entspricht (Profil > Einstellungen), und testen Sie erneut.',
+    es: 'Conectado, pero Tineco no lista ningún aparato para esta cuenta en este país: compruebe que «País de la cuenta» es el de la app Tineco (Perfil > Ajustes) y vuelva a probar.',
   },
   deviceOffline: {
     en: 'The appliance did not answer: it is off or out of Wi-Fi range.',

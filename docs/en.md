@@ -90,5 +90,9 @@ An offline appliance never fails a scene: the outputs say so.
   all the **country** of the account.
 - **"Tineco refused the verification code"**: codes expire; use **Send a new
   verification code** and type the new one.
+- **"Tineco lists no appliance"**: the list comes from the Tineco servers of
+  the chosen country. Pick the country shown in the Tineco app (Profile >
+  Settings), save, and test again. Still empty? Share the "Answer shape" line
+  of the logs (it holds no personal data) in an issue.
 - Integration logs: Gladys → Integrations → Tineco → logs. Passwords and
   tokens are never logged.

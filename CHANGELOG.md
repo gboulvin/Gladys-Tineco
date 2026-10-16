@@ -10,6 +10,18 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+### Fixed
+
+- Appliances missing from the Discovery tab although the Tineco app shows
+  them: an empty device list is asked again without the Tineco cache, and the
+  appliances are found wherever the answer puts them (grouped lists, `data`,
+  `deviceId`).
+
+### Changed
+
+- When Tineco lists no appliance, the test button points to the account
+  country, and the logs describe the shape of the answer (never its values).
+
 ## [1.0.0] - 2026-10-16
 
 ### Added

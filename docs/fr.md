@@ -98,5 +98,10 @@ l'indiquent.
 - **« Tineco a refusé le code de vérification »** : les codes expirent ;
   utilisez **Recevoir un nouveau code de vérification** et saisissez le
   nouveau.
+- **« Tineco ne liste aucun appareil »** : la liste vient des serveurs Tineco
+  du pays choisi. Choisissez le pays affiché dans l'application Tineco (Profil
+  > Paramètres), enregistrez et testez à nouveau. Toujours vide ? Partagez la
+  > ligne « Answer shape » des logs (elle ne contient aucune donnée
+  > personnelle) dans une issue.
 - Logs de l'intégration : Gladys → Intégrations → Tineco → logs. Les mots de
   passe et jetons n'y apparaissent jamais.

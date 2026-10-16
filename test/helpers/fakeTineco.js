@@ -121,7 +121,9 @@ export function createFakeTineco({
         return json({ code: '0000', data: { authCode: 'auth-code' } });
       }
       if (path.endsWith('/device/getDeviceListV2')) {
-        return json({ code: '0000', payload: { deviceList: cloud.devices } });
+        // `deviceListAnswer` lets a test serve another shape, per refresh flag.
+        const custom = cloud.deviceListAnswer?.(query.refresh === 'true');
+        return json(custom ?? { code: '0000', payload: { deviceList: cloud.devices } });
       }
     }
 

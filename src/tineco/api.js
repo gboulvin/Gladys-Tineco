@@ -128,6 +128,54 @@ function queryString(params) {
     .join('&');
 }
 
+const isDevice = (item) =>
+  item !== null && typeof item === 'object' && (item.did ?? item.deviceId) !== undefined;
+
+/**
+ * The appliances of a device-list answer, wherever they sit: `payload` or
+ * `data`, `deviceList` or `userDeviceList`, or grouped (by room, by
+ * category) in nested lists depending on the app version.
+ */
+export function extractDevices(body) {
+  const found = new Map();
+  (function walk(node, depth) {
+    if (depth > 6 || node === null || typeof node !== 'object') return;
+    if (Array.isArray(node)) {
+      for (const item of node) {
+        if (isDevice(item)) {
+          const did = item.did ?? item.deviceId;
+          if (!found.has(did)) found.set(did, item.did ? item : { ...item, did });
+        } else {
+          walk(item, depth + 1);
+        }
+      }
+      return;
+    }
+    for (const value of Object.values(node)) walk(value, depth + 1);
+  })(body, 0);
+  return [...found.values()];
+}
+
+/**
+ * The structure of a JSON answer without any value (keys, types, array
+ * lengths), safe to log: no e-mail, token or device id.
+ */
+export function describeShape(node, depth = 0) {
+  if (Array.isArray(node)) {
+    return node.length === 0 ? '[]' : `[${node.length} x ${describeShape(node[0], depth + 1)}]`;
+  }
+  if (node === null || typeof node !== 'object') {
+    return node === null ? 'null' : typeof node;
+  }
+  if (depth > 3) return '{…}';
+  const entries = Object.entries(node).map(([key, value]) =>
+    key === 'code' || key === 'msg'
+      ? `${key}: ${JSON.stringify(value)}`
+      : `${key}: ${describeShape(value, depth + 1)}`,
+  );
+  return `{ ${entries.join(', ')} }`;
+}
+
 export class TinecoApi {
   /**
    * @param {object} options
@@ -314,9 +362,27 @@ export class TinecoApi {
 
   /**
    * List the appliances of the account.
+   *
+   * The cached list (`refresh=false`, what the app asks first) can be empty
+   * for an app device id that was just verified: an empty answer is asked
+   * again with `refresh=true`.
    * @returns {Promise<object[]>} raw Tineco devices (`did`, `className`, `resource`, `nick`...)
    */
-  async getDevices({ uid, accessToken }, iot) {
+  async getDevices(account, iot) {
+    const cached = await this.deviceListCall(account, iot, 'false');
+    const devices = extractDevices(cached);
+    if (devices.length > 0) {
+      return devices;
+    }
+    const fresh = await this.deviceListCall(account, iot, 'true');
+    const refreshed = extractDevices(fresh);
+    // Shape of the answer, never its values: what a user can share to
+    // diagnose an account whose appliances do not show up.
+    this.lastDeviceListShape = describeShape(fresh);
+    return refreshed;
+  }
+
+  async deviceListCall({ uid, accessToken }, iot, refresh) {
     const body = await this.openCall('/device/getDeviceListV2', {
       uid,
       accessToken,
@@ -325,18 +391,14 @@ export class TinecoApi {
       userId: uid,
       lang: LANG,
       deviceType: '1',
-      refresh: 'false',
+      refresh,
     });
     if (String(body.code) !== OK) {
       throw new TinecoAuthError(body.msg || 'Tineco refused the device list', {
         code: body.code,
       });
     }
-    const payload = body.payload ?? body.data ?? body;
-    if (Array.isArray(payload)) {
-      return payload;
-    }
-    return payload.deviceList ?? payload.userDeviceList ?? [];
+    return body;
   }
 
   // --- IoT platform -------------------------------------------------------------

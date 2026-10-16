@@ -187,6 +187,12 @@ export class TinecoSession {
     this.iot = { ...iot, at: this.now() };
     this.devices = await this.api.getDevices(this.account, this.iot);
     logger.info(`Tineco session open, ${this.devices.length} appliance(s)`);
+    if (this.devices.length === 0) {
+      logger.warn(
+        `No appliance in the device list of the ${this.config.region} servers. ` +
+          `Check the account country. Answer shape: ${this.api.lastDeviceListShape}`,
+      );
+    }
   }
 
   async ensureConnected() {

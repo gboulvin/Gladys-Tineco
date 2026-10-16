@@ -94,5 +94,10 @@ zeigen es an.
   vor allem das **Land** des Kontos.
 - **„Tineco hat den Bestätigungscode abgelehnt“**: Codes laufen ab; nutzen
   Sie **Neuen Bestätigungscode senden** und geben Sie den neuen ein.
+- **„Tineco listet kein Gerät“**: Die Liste kommt von den Tineco-Servern des
+  gewählten Landes. Wählen Sie das Land, das die Tineco-App anzeigt (Profil >
+  Einstellungen), speichern Sie und testen Sie erneut. Immer noch leer? Teilen
+  Sie die Zeile „Answer shape“ der Logs (sie enthält keine persönlichen Daten)
+  in einem Issue.
 - Integrationsprotokolle: Gladys → Integrationen → Tineco → Logs. Passwörter
   und Token werden nie protokolliert.

@@ -4,6 +4,8 @@ import {
   TinecoApi,
   TinecoAuthError,
   TinecoVerificationRequiredError,
+  describeShape,
+  extractDevices,
   generateAppDeviceId,
   md5,
   sign,
@@ -82,4 +84,60 @@ test('the datacenter falls back to the region when the lookup fails', async () =
     },
   });
   assert.equal(await client.resolveDatacenter(), 'na');
+});
+
+async function listDevices(cloud) {
+  const client = api(cloud);
+  const account = await client.login(ACCOUNT.email, ACCOUNT.password);
+  const iot = await client.iotLogin(account.uid, await client.getAuthCode(account));
+  return { client, devices: await client.getDevices(account, iot) };
+}
+
+test('an empty cached device list is asked again with refresh=true', async () => {
+  const cloud = createFakeTineco();
+  cloud.deviceListAnswer = (refresh) =>
+    refresh
+      ? { code: '0000', payload: { deviceList: [S7_FLASHDRY] } }
+      : { code: '0000', payload: { deviceList: [] } };
+  const { devices } = await listDevices(cloud);
+  assert.deepEqual(devices, [S7_FLASHDRY]);
+  const refreshes = cloud.calls
+    .filter((c) => c.path.endsWith('/getDeviceListV2'))
+    .map((c) => c.query.refresh);
+  assert.deepEqual(refreshes, ['false', 'true']);
+});
+
+test('appliances are found under data, grouped, or keyed deviceId', () => {
+  const grouped = {
+    code: '0000',
+    payload: {},
+    data: {
+      groups: [
+        { name: 'Home', userDeviceList: [S7_FLASHDRY] },
+        { name: 'Flat', list: [{ deviceId: 'abc', nick: 'Other' }, S7_FLASHDRY] },
+      ],
+    },
+  };
+  assert.deepEqual(extractDevices(grouped), [
+    S7_FLASHDRY,
+    { deviceId: 'abc', nick: 'Other', did: 'abc' },
+  ]);
+  assert.deepEqual(extractDevices({ code: '0000', payload: { deviceList: [] } }), []);
+});
+
+test('an empty list keeps a value-free description of the answer for the logs', async () => {
+  const cloud = createFakeTineco();
+  cloud.deviceListAnswer = () => ({
+    code: '0000',
+    msg: 'success',
+    payload: { deviceList: [], shareList: [{ owner: 'me@example.com' }] },
+  });
+  const { client, devices } = await listDevices(cloud);
+  assert.deepEqual(devices, []);
+  assert.equal(
+    client.lastDeviceListShape,
+    '{ code: "0000", msg: "success", payload: { deviceList: [], shareList: [1 x { owner: string }] } }',
+  );
+  assert.ok(!client.lastDeviceListShape.includes('example.com'));
+  assert.equal(describeShape(null), 'null');
 });
