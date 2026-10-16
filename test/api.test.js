@@ -107,6 +107,22 @@ test('an empty cached device list is asked again with refresh=true', async () =>
   assert.deepEqual(refreshes, ['false', 'true']);
 });
 
+test('the devices are listed for the IoT user id, not the account uid', async () => {
+  const cloud = createFakeTineco();
+  const { devices } = await listDevices(cloud);
+  assert.deepEqual(devices, [S7_FLASHDRY]);
+  const call = cloud.calls.find((c) => c.path.endsWith('/getDeviceListV2'));
+  assert.equal(call.query.uid, 'iot-uid-1');
+  assert.equal(call.query.userId, 'iot-uid-1');
+});
+
+test('an IoT login answering the account uid itself still lists the devices', async () => {
+  const cloud = createFakeTineco();
+  cloud.iotUserId = 'uid-1'; // the IoT login answers the account uid itself
+  const { devices } = await listDevices(cloud);
+  assert.deepEqual(devices, [S7_FLASHDRY]);
+});
+
 test('appliances are found under data, grouped, or keyed deviceId', () => {
   const grouped = {
     code: '0000',
@@ -136,7 +152,7 @@ test('an empty list keeps a value-free description of the answer for the logs', 
   assert.deepEqual(devices, []);
   assert.equal(
     client.lastDeviceListShape,
-    '{ code: "0000", msg: "success", payload: { deviceList: [], shareList: [1 x { owner: string }] } }',
+    '{ code: "0000", msg: "success", payload: { deviceList: [], shareList: [1 x { owner: string }] } } (user ids tried: 2)',
   );
   assert.ok(!client.lastDeviceListShape.includes('example.com'));
   assert.equal(describeShape(null), 'null');

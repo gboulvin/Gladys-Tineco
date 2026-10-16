@@ -365,21 +365,28 @@ export class TinecoApi {
    *
    * The cached list (`refresh=false`, what the app asks first) can be empty
    * for an app device id that was just verified: an empty answer is asked
-   * again with `refresh=true`.
+   * again with `refresh=true`, for each candidate user id.
    * @returns {Promise<object[]>} raw Tineco devices (`did`, `className`, `resource`, `nick`...)
    */
   async getDevices(account, iot) {
-    const cached = await this.deviceListCall(account, iot, 'false');
-    const devices = extractDevices(cached);
-    if (devices.length > 0) {
-      return devices;
+    // The app lists the devices of the IoT user id (the one the IoT login
+    // answers), which can differ from the account uid: that one first, the
+    // account uid as a fallback.
+    const uids = [...new Set([iot.userId, account.uid].filter(Boolean))];
+    let last;
+    for (const uid of uids) {
+      for (const refresh of ['false', 'true']) {
+        last = await this.deviceListCall({ uid, accessToken: account.accessToken }, iot, refresh);
+        const devices = extractDevices(last);
+        if (devices.length > 0) {
+          return devices;
+        }
+      }
     }
-    const fresh = await this.deviceListCall(account, iot, 'true');
-    const refreshed = extractDevices(fresh);
     // Shape of the answer, never its values: what a user can share to
     // diagnose an account whose appliances do not show up.
-    this.lastDeviceListShape = describeShape(fresh);
-    return refreshed;
+    this.lastDeviceListShape = `${describeShape(last)} (user ids tried: ${uids.length})`;
+    return [];
   }
 
   async deviceListCall({ uid, accessToken }, iot, refresh) {

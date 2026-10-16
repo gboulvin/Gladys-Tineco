@@ -10,6 +10,12 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+### Fixed
+
+- No appliance found although the Tineco app shows them: the device list is
+  now asked for the user id the Tineco IoT login answers, like the app does,
+  instead of the account uid (which Tineco answers with an empty list).
+
 ## [1.0.2] - 2026-10-16
 
 ### Fixed

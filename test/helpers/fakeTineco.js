@@ -86,6 +86,7 @@ export function createFakeTineco({
     emailsSent: 0,
     accessToken: 'account-token',
     iotToken: 'iot-token',
+    iotUserId: 'iot-uid-1',
   };
 
   cloud.fetch = async (input, init = {}) => {
@@ -123,7 +124,11 @@ export function createFakeTineco({
       if (path.endsWith('/device/getDeviceListV2')) {
         // `deviceListAnswer` lets a test serve another shape, per refresh flag.
         const custom = cloud.deviceListAnswer?.(query.refresh === 'true');
-        return json(custom ?? { code: '0000', payload: { deviceList: cloud.devices } });
+        if (custom) return json(custom);
+        // Like the real cloud: the devices belong to the IoT user id, the
+        // account uid lists nothing.
+        const mine = query.uid === cloud.iotUserId && query.userId === cloud.iotUserId;
+        return json({ code: '0000', data: mine ? cloud.devices : [] });
       }
     }
 
@@ -131,7 +136,12 @@ export function createFakeTineco({
       return json({ code: 0, data: { dc: 'eu' } });
     }
     if (url.host === 'api-base.dc-eu.ww.ecouser.net') {
-      return json({ result: 'ok', token: cloud.iotToken, resource: 'res', userId: 'uid-1' });
+      return json({
+        result: 'ok',
+        token: cloud.iotToken,
+        resource: 'res',
+        userId: cloud.iotUserId,
+      });
     }
     if (url.host === 'api-ngiot.dc-eu.ww.ecouser.net') {
       const status = cloud.statuses[query.eid];
