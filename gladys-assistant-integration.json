@@ -8,8 +8,8 @@
     "de": "Tineco-Nasssauger (Floor One, iFloor…): Status, Tanks, Akku und Szenen.",
     "es": "Fregonas eléctricas Tineco (Floor One, iFloor…): estado, depósitos, batería y escenas."
   },
-  "version": "1.0.0",
-  "docker_image": "ghcr.io/gboulvin/gladys-tineco:1.0.0",
+  "version": "0.9.0",
+  "docker_image": "ghcr.io/gboulvin/gladys-tineco:0.9.0",
   "gladys_version": ">=5.1.0",
   "cover_image": "https://raw.githubusercontent.com/gboulvin/Gladys-Tineco/main/cover.png",
   "categories": ["appliances"],

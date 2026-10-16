@@ -10,8 +10,6 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
-## [1.0.0] - 2026-10-16
-
 ### Added
 
 - Tineco account connection through the Tineco cloud, with the e-mail
@@ -28,6 +26,3 @@ the notes of the version's GitHub Release.
 - Unreachable badge and offline activity when an appliance does not answer.
 - English, French, German and Spanish everywhere: manifest, messages, widgets,
   device names and documentation.
-
-[Unreleased]: https://github.com/gboulvin/Gladys-Tineco/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/gboulvin/Gladys-Tineco/releases/tag/v1.0.0
