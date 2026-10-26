@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-26
+
 ### Changed
 
 - Requires Gladys 5.3.0 or later: the manifest declares search keywords for
@@ -73,7 +75,8 @@ the notes of the version's GitHub Release.
 - English, French, German and Spanish everywhere: manifest, messages, widgets,
   device names and documentation.
 
-[Unreleased]: https://github.com/gboulvin/Gladys-Tineco/compare/v1.0.4...HEAD
+[Unreleased]: https://github.com/gboulvin/Gladys-Tineco/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/gboulvin/Gladys-Tineco/compare/v1.0.4...v1.1.0
 [1.0.4]: https://github.com/gboulvin/Gladys-Tineco/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/gboulvin/Gladys-Tineco/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/gboulvin/Gladys-Tineco/compare/v1.0.1...v1.0.2
